@@ -4,6 +4,8 @@ node_js:
 cache: npm
 script:
   - npm run build
+before_deploy:
+  - cd dist
 deploy:
   provider: pages
   local_dir: build
