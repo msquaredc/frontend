@@ -3,7 +3,7 @@ node_js:
   - "node"
 cache: npm
 script:
-  - npm run build
+  - bash deploy.sh
 before_deploy:
   - cd dist
 deploy:
