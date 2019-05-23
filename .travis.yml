@@ -3,6 +3,7 @@ node_js:
   - "node"
 deploy:
   provider: pages
+  project: ./dist/
   skip-cleanup: true
   github-token: $GITHUB_PAT  # Set in the settings page of your repository, as a secure variable
   keep-history: true
