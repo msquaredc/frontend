@@ -3,14 +3,11 @@ node_js:
   - "node"
 cache: npm
 script:
-  - bash deploy.sh
-before_deploy:
+  - npm run build
+after_success:
   - cd dist
-deploy:
-  provider: pages
-  local_dir: build
-  skip-cleanup: true
-  github-token: $GITHUB_PAT  # Set in the settings page of your repository, as a secure variable
-  keep-history: true
-  on:
-    branch: master
+  - git init
+  - git add -A
+  - git commit -m 'deploy'
+  - github.com/${USER}/${REPO}.git
+  - git push "https://${GITHUB_PAT}@github.com/msquaredc/msquaredc.github.io" master > /dev/null 2>&1
