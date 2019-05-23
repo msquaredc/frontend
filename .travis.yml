@@ -1,9 +1,12 @@
 language: node_js
 node_js:
   - "node"
+cache: npm
+script:
+  - npm run deploy
 deploy:
   provider: pages
-  project: ./dist/
+  local_dir: build
   skip-cleanup: true
   github-token: $GITHUB_PAT  # Set in the settings page of your repository, as a secure variable
   keep-history: true
