@@ -9,5 +9,4 @@ after_success:
   - git init
   - git add -A
   - git commit -m 'deploy'
-  - github.com/${USER}/${REPO}.git
   - git push "https://${GITHUB_PAT}@github.com/msquaredc/msquaredc.github.io" master > /dev/null 2>&1
