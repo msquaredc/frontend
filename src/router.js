@@ -2,13 +2,14 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
 import Index from './views/Index.vue'
+import CreationWizard from './views/CreationWizard.vue'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
-      path: '/home',
+      path: '/',
       name: 'home',
       component: Home
     },
@@ -21,9 +22,14 @@ export default new Router({
       component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
     },
     {
-      path: '/',
+      path: '/index',
       name: 'start',
       component: Index
-    }
+    },
+    {
+      path: '/create/*',
+      name: 'create',
+      component: CreationWizard
+    },
   ]
 })

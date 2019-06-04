@@ -5,20 +5,32 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    table: {
+    creation_step: 0,
+    current_table: {
       content:null,
       header:null
-    }
+    },
+    relevant_headers: null,
+    question: null,
   },
   mutations: {
-    setTableContent(state, content) {
-      state.table.content = content
+    setCurrentTable(state, content, header) {
+      state.current_table.content = content
+      state.current_table.header = header
+      state.creation_step = 1
     },
-    setTableHeaders(state, header){
-      state.table.header = header
+    setRelevantHeaders(state, selection){
+      state.relevant_headers = selection
+      state.creation_step = 2
+    },
+    addQuestion(state, header, show_element, ask_element){
+      state.question[header].append({'show':show_element, 'ask':ask_element})
     }
+    
   },
   actions: {
-
+    finish(state){
+      return state.question;
+    }
   }
 })

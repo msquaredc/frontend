@@ -1,8 +1,9 @@
 
 <template>
 <div>
+  <md-content>
   <div class="parse">
-    <h1>Parse CSV to JSON</h1>
+    <md-headline>Parse CSV to JSON</md-headline>
     <input 
       id="fileInput"
       type="file"
@@ -23,7 +24,10 @@
       </div>
     </div>
   </div>
+  </md-content>
+  <md-content>
   <jsontable v-bind:table="doc" v-bind:header="header"></jsontable>
+  </md-content>
 </div>
 </template>
 

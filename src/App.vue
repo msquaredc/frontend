@@ -1,16 +1,14 @@
 <template>
-  <div class="page-container md-layout-column">
-    <Toolbar></Toolbar>
-    
-    <md-content>
+  <div>
+  <Toolbar>
+      <router-view></router-view>
       <FileUpload></FileUpload>
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error quibusdam, non molestias et! Earum magnam, similique, quo recusandae placeat dicta asperiores modi sint ea repudiandae maxime? Quae non explicabo, neque.
-      
-    </md-content>
+  </Toolbar>
   </div>
 </template>
 
 <script>
+  import router from './router.js'
   import Toolbar from './components/Toolbar.vue'
   import FileUpload from './components/FileUpload.vue'
   export default {
@@ -37,7 +35,7 @@
 
 <style lang="scss" scoped>
   .page-container {
-    min-height: 100vh;
+    min-width: 100vh;
     overflow: hidden;
     position: relative;
     border: 1px solid rgba(#000, .12);
