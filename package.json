@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "blob": "0.0.5",
-    "core-js": "^2.6.5",
+    "core-js": "^2.6.9",
     "file-saver": "^2.0.2",
     "node-sass": "^4.12.0",
     "papaparse": "^4.6.3",

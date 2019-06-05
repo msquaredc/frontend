@@ -1,7 +1,14 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div v-if="allCodings.length > 0">
+    All Codings: {{ allCodings }}
+  </div>
+  <div v-else>
+    <md-empty-state
+      md-icon="devices_other"
+      md-label="Create your first project"
+      md-description="Creating project, you'll be able to upload your data and collaborate with people.">
+      <md-button class="md-primary md-raised" to="/create/">Create first project</md-button>
+  </md-empty-state>
   </div>
 </template>
 
@@ -13,6 +20,11 @@ export default {
   name: 'home',
   components: {
     HelloWorld
+  },
+  computed: {
+    allCodings (){
+      return Object.keys(this.$store.state.codings.all)
+    },
   }
 }
 </script>

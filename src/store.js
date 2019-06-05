@@ -5,13 +5,23 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    creation_step: 0,
-    current_table: {
-      content:null,
-      header:null
+    creation:{
+      active: 'first',
+      steps:{
+        first: false,
+        second: false,
+      },
+      table: {
+        content:null,
+        header:null
+      },
+      relevant_headers: null,
+      question: null,
     },
-    relevant_headers: null,
-    question: null,
+    codings:{
+      current:null,
+      all:[],
+    }
   },
   mutations: {
     setCurrentTable(state, content, header) {

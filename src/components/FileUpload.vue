@@ -1,30 +1,21 @@
 
 <template>
 <div>
-  <md-content>
   <div class="parse">
-    <md-headline>Parse CSV to JSON</md-headline>
+    <span class="md-headline"> Parse CSV to JSON</span>
+    <span class="md-body-1">
+      <p>
+    <md-field>
+      <label> Upload your CSV file </label>
+      <md-file v-model="fileobject" @change="upload"/>
+    </md-field>
     <input 
       id="fileInput"
       type="file"
       @change="upload">
-    <a
-      @click='save'
-      type='button'
-      download >
-      Save
-    </a>
-    <div class="body">
-      <div class="entry">
-        <textarea 
-          class="entry-result"
-          v-model='json'
-          placeholder="Type here">
-        </textarea>
-      </div>
-    </div>
+      </p>
+    </span>
   </div>
-  </md-content>
   <md-content>
   <jsontable v-bind:table="doc" v-bind:header="header"></jsontable>
   </md-content>
@@ -44,6 +35,7 @@ data: function () {
         doc: null,
         header: null,
         json: null,
+        fileobject: null,
         }
     },
 methods: {

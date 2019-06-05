@@ -1,8 +1,10 @@
 <template>
   <div>
   <Toolbar>
+    <span class="md-content">
+      <span class="md-headline">Creation Step:{{ creationStep }}</span>
       <router-view></router-view>
-      <FileUpload></FileUpload>
+    </span>
   </Toolbar>
   </div>
 </template>
@@ -10,7 +12,6 @@
 <script>
   import router from './router.js'
   import Toolbar from './components/Toolbar.vue'
-  import FileUpload from './components/FileUpload.vue'
   export default {
     name: 'Temporary',
     data: function(){
@@ -19,7 +20,7 @@
         }
     },
     components: {
-      Toolbar, FileUpload
+      Toolbar
     },
     methods: {
       loadTextFromFile(ev) {
@@ -28,6 +29,11 @@
 
         reader.onload = e => this.$emit("load", e.target.result);
         reader.readAsText(file);
+      }
+    },
+    computed: {
+      creationStep (){
+        return this.$store.state.creation.step
       }
     }
   }
