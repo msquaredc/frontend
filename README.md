@@ -1,6 +1,6 @@
 # first_try
 
-[Demo](https://msquaredc.github.io/frontend/)
+[Demo](https://msquaredc.github.io/)
 
 ## Project setup
 ```
