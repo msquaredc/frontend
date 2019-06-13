@@ -11,13 +11,15 @@
     "blob": "0.0.5",
     "core-js": "^2.6.9",
     "file-saver": "^2.0.2",
+    "localforage": "^1.7.3",
     "node-sass": "^4.12.0",
     "papaparse": "^4.6.3",
     "sass-loader": "^7.1.0",
     "vue": "^2.6.10",
     "vue-material": "^1.0.0-beta-11",
     "vue-router": "^3.0.3",
-    "vuex": "^3.0.1"
+    "vuex": "^3.0.1",
+    "vuex-persist": "^2.0.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.7.0",

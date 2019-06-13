@@ -1,7 +1,15 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import VuexPersistence from 'vuex-persist'
+import localforage from 'localforage'
 
 Vue.use(Vuex)
+
+const vuexLocal = new VuexPersistence({
+  storage: localforage,
+  saveState: (key, state, storage) => Promise.resolve(storage.setItem(key, state)),
+  restoreState: (key, storage) => Promise.resolve(storage.getItem(key))
+})
 
 export default new Vuex.Store({
   state: {
@@ -44,5 +52,6 @@ export default new Vuex.Store({
     finish(state){
       return state.question;
     }
-  }
+  },
+  plugins: [vuexLocal.plugin],
 })
