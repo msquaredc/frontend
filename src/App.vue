@@ -2,7 +2,6 @@
   <div>
   <Toolbar>
     <span class="md-content">
-      <span class="md-headline">Creation Step:{{ creationStep }}</span>
       <router-view></router-view>
     </span>
   </Toolbar>

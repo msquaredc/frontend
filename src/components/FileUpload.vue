@@ -2,17 +2,13 @@
 <template>
 <div>
   <div class="parse">
-    <span class="md-headline"> Parse CSV to JSON</span>
+    <span class="md-headline"> CSV upload</span>
     <span class="md-body-1">
       <p>
     <md-field>
       <label> Upload your CSV file </label>
       <md-file v-model="fileobject" @change="upload"/>
     </md-field>
-    <input 
-      id="fileInput"
-      type="file"
-      @change="upload">
       </p>
     </span>
   </div>
