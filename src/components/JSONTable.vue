@@ -1,7 +1,8 @@
 <template>
     <div>
-    <h1>Your Table:</h1>
-
+    <span class="md-headline">
+    Your Table:
+    </span>
     <md-table>
       <md-table-row>
         <md-table-head v-for="title in header">{{title}}</md-table-head>

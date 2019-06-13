@@ -15,7 +15,7 @@ export default new Vuex.Store({
         content:null,
         header:null,
       },
-      relevant_headers: null,
+      relevant_headers: [],
       question: null,
     },
     codings:{

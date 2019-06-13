@@ -6,10 +6,16 @@
         <!-- <md-button class="md-raised md-primary" @click="setDone('first', 'second')">Continue</md-button> -->
       </md-step>
 
-      <md-step id="second" md-label="Second Step" :md-editable="false" :md-done.sync="second">
+      <md-step id="second" md-label="Select relevant headers" :md-editable="false" :md-done.sync="second">
         <md-content>
+          <span class=md-headline>
+            Select the questions:
+          </span>
+          <md-checkbox v-model="questions" v-for="title in heading" :value="title" :key="title.key"> {{title}} </md-checkbox>
+          <md-button class="md-raised md-primary" @click="setDone('second', 'third')">Confirm selection</md-button>
         <jsontable :table="table" :header="heading"></jsontable>
         </md-content>
+        
       </md-step>
 
       <md-step id="third" to="/create/components/steppers/third" md-label="Third Step">
@@ -29,6 +35,7 @@
 <script>
 import FileUpload from '../components/FileUpload.vue'
 import jsontable from '../components/JSONTable.vue'
+import invertedtable from '../components/InvertedSelectionTable.vue'
 export default {
   name: 'CreationWizard',
   components: {FileUpload,jsontable},
@@ -78,7 +85,22 @@ export default {
     },
     heading (){
       return this.$store.state.creation.table.header
+    },
+    questions:{
+      get: function (){
+        return this.$store.state.creation.relevant_headers
+      },
+      set: function (newValue){
+        this.$store.state.creation.relevant_headers = newValue
+      }
     }
+
   }
 }
 </script>
+
+<style lang="scss" scoped>
+  .md-checkbox {
+    display: flex;
+  }
+</style>
