@@ -1,14 +1,14 @@
 <template>
   <div>
-    <md-steppers md-sync-route md-dynamic-height md-linear>
-      <md-step id="first" to="/create/" exact md-label="Import Data" :md-editable="false" :md-done.sync="first">
+    <md-steppers md-dynamic-height md-linear :md-active-step.sync="active">
+      <md-step id="first" exact md-label="Import Data" :md-editable="false" :md-done.sync="first">
         <FileUpload></FileUpload>
-        <md-button class="md-raised md-primary" @click="setDone('first', 'second')">Continue</md-button>
+        <!-- <md-button class="md-raised md-primary" @click="setDone('first', 'second')">Continue</md-button> -->
       </md-step>
 
-      <md-step id="second" to="/create/select" md-label="Second Step" :md-editable="false" :md-done.sync="second">
+      <md-step id="second" md-label="Second Step" :md-editable="false" :md-done.sync="second">
         <md-content>
-        <jsontable v-bind:table="doc" v-bind:header="header"></jsontable>
+        <jsontable :table="table" :header="heading"></jsontable>
         </md-content>
       </md-step>
 
@@ -17,10 +17,12 @@
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias doloribus eveniet quaerat modi cumque quos sed, temporibus nemo eius amet aliquid, illo minus blanditiis tempore, dolores voluptas dolore placeat nulla.</p>
       </md-step>
     </md-steppers>
-    <div>
+<!--     <div>
       <p> Steps: {{ steps }} </p>
       <p> First: {{ first }} </p>
-    </div>
+      <p> Table: {{ table}} </p>
+      <p> Header: {{ heading }} </p>
+    </div> -->
   </div>
 </template>
 
@@ -55,16 +57,27 @@ export default {
         this.steps.first = newValue
       },
     },
-    second: function () {
-      return this.steps.second
+    second: {
+      get: function (){
+        return this.steps.second
+      },
+      set: function (newValue){
+        this.steps.second = newValue
+      },
     },
     active: {
       get: function (){
         return this.$store.state.creation.active
       },
       set: function (newValue){
-        return this.$store.state.creation.active
+        this.$store.state.creation.active = newValue
       }
+    },
+    table (){
+      return this.$store.state.creation.table.content
+    },
+    heading (){
+      return this.$store.state.creation.table.header
     }
   }
 }

@@ -17,7 +17,7 @@
     </span>
   </div>
   <md-content>
-  <jsontable v-bind:table="doc" v-bind:header="header"></jsontable>
+  <!-- <jsontable v-bind:table="doc" v-bind:header="heading"></jsontable> -->
   </md-content>
 </div>
 </template>
@@ -32,30 +32,31 @@ name: 'parse',
 components:{jsontable},
 data: function () {
     return {
-        doc: null,
-        header: null,
-        json: null,
-        fileobject: null,
-        }
+      heading: null,
+      doc: null,
+      json: null,
+      fileobject: null,
+      }
     },
 methods: {
-    upload (e) {
+  upload (e) {
     const that = this
     const fileToLoad = event.target.files[0]
     const reader = new FileReader()
     reader.onload = fileLoadedEvent => {
-        Papa.parse(fileLoadedEvent.target.result, {
-        header: true,
-        complete (results) {
-            console.log('complete', results)
-            that.doc = results.data
-            that.header = results.meta['fields']
-            that.json = JSON.stringify(results.data, null, 2)
-        },
-        error (errors) {
-            console.log('error', errors)
-        }
-        })
+      Papa.parse(fileLoadedEvent.target.result, {
+      header: true,
+      complete (results) {
+          console.log('complete', results)
+          that.doc = results.data
+          that.heading = results.meta['fields']
+          that.update_values(that.doc,that.heading)
+          that.json = JSON.stringify(results.data, null, 2)
+      },
+      error (errors) {
+          console.log('error', errors)
+      }
+    })
     }
     reader.readAsText(fileToLoad)
     },
@@ -65,9 +66,13 @@ methods: {
     },
     parseJSONtoCSV () {
     return Papa.unparse(this.json)
-    }
-},
+    },
+    update_values (content,header){
+      this.$store.commit("setCurrentTable",{"content":content,"header":header})
+    },
+  },
 }
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

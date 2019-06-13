@@ -13,7 +13,7 @@ export default new Vuex.Store({
       },
       table: {
         content:null,
-        header:null
+        header:null,
       },
       relevant_headers: null,
       question: null,
@@ -24,14 +24,16 @@ export default new Vuex.Store({
     }
   },
   mutations: {
-    setCurrentTable(state, content, header) {
-      state.current_table.content = content
-      state.current_table.header = header
-      state.creation_step = 1
+    setCurrentTable(state, payload) {
+      state.creation.table.content = payload.content
+      state.creation.table.header = payload.header
+      state.creation.steps.first = true
+      state.creation.active = "second"
+      console.log("New Table set.")
     },
     setRelevantHeaders(state, selection){
-      state.relevant_headers = selection
-      state.creation_step = 2
+      state.creation.relevant_headers = selection
+      state.creation.step = 2
     },
     addQuestion(state, header, show_element, ask_element){
       state.question[header].append({'show':show_element, 'ask':ask_element})
