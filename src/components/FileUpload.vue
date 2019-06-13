@@ -41,6 +41,7 @@ data: function () {
 methods: {
     upload (e) {
     const that = this
+    const store = this.$store.state.creation
     const fileToLoad = event.target.files[0]
     const reader = new FileReader()
     reader.onload = fileLoadedEvent => {
@@ -49,7 +50,9 @@ methods: {
         complete (results) {
             console.log('complete', results)
             that.doc = results.data
+            store.table = results.data
             that.header = results.meta['fields']
+            store.header = results.meta['fields']
             that.json = JSON.stringify(results.data, null, 2)
         },
         error (errors) {

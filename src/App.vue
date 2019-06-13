@@ -2,7 +2,7 @@
   <div>
   <Toolbar>
     <span class="md-content">
-      <span class="md-headline">Creation Step:{{ creationStep }}</span>
+      <!-- <span class="md-headline">Creation Step:{{ creationStep }}</span> -->
       <router-view></router-view>
     </span>
   </Toolbar>
@@ -12,9 +12,12 @@
 <script>
   import router from './router.js'
   import Toolbar from './components/Toolbar.vue'
+  import store from './store'
+
   export default {
+    store,
     name: 'Temporary',
-    data: function(){
+    data () {
       return {
         file:null
         }
@@ -32,9 +35,12 @@
       }
     },
     computed: {
-      creationStep (){
-        return this.$store.state.creation.step
-      }
+      // creationStep (){
+      //   return this.$store.state.creation.step
+      // }
+    },
+    created (){
+      console.log("Here i would load the database...")
     }
   }
 </script>

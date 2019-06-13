@@ -23,7 +23,7 @@ export default {
   },
   computed: {
     allCodings (){
-      return Object.keys(this.$store.state.codings.all)
+      return Object.keys(this.$store.state)
     },
   }
 }

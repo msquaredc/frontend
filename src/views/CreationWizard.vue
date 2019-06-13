@@ -8,7 +8,8 @@
 
       <md-step id="second" to="/create/select" md-label="Second Step" :md-editable="false" :md-done.sync="second">
         <md-content>
-        <jsontable v-bind:table="doc" v-bind:header="header"></jsontable>
+          <h1> Here should appear the table </h1>
+        <jsontable v-bind:tablepath="table" v-bind:header="header"></jsontable>
         </md-content>
       </md-step>
 
@@ -20,11 +21,13 @@
     <div>
       <p> Steps: {{ steps }} </p>
       <p> First: {{ first }} </p>
+      <p> Table: {{ table }} </p>
     </div>
   </div>
 </template>
 
 <script>
+import {mapState} from 'vuex'
 import FileUpload from '../components/FileUpload.vue'
 import jsontable from '../components/JSONTable.vue'
 export default {
@@ -39,6 +42,12 @@ export default {
     }
   },
   computed: {
+    table: function (){
+      return this.$store.state.creation.table
+    },
+    header: function (){
+      return this.$store.state.creation.header
+    },
     steps: {
       get: function (){
         return this.$store.state.creation.steps
@@ -65,7 +74,8 @@ export default {
       set: function (newValue){
         return this.$store.state.creation.active
       }
-    }
+    },
+    ...mapState(['creation'])
   }
 }
 </script>
