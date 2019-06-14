@@ -18,13 +18,14 @@ export default new Vuex.Store({
       steps:{
         first: false,
         second: false,
+        third: false,
       },
       table: {
         content:null,
         header:null,
       },
       relevant_headers: [],
-      question: null,
+      question: {},
     },
     codings:{
       current:null,
@@ -41,7 +42,11 @@ export default new Vuex.Store({
     },
     setRelevantHeaders(state, selection){
       state.creation.relevant_headers = selection
-      state.creation.step = 2
+      selection.forEach(element => {
+        state.creation.question[element] = {}
+      });
+      state.creation.steps.second = true
+      state.creation.active = "third"
     },
     addQuestion(state, header, show_element, ask_element){
       state.question[header].append({'show':show_element, 'ask':ask_element})

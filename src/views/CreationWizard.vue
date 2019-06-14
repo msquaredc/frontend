@@ -12,22 +12,25 @@
             Select the questions:
           </span>
           <md-checkbox v-model="questions" v-for="title in heading" :value="title" :key="title.key"> {{title}} </md-checkbox>
-          <md-button class="md-raised md-primary" @click="setDone('second', 'third')">Confirm selection</md-button>
+          <md-button class="md-raised md-primary" @click="setRelevantHeaders(questions)">Confirm selection</md-button>
         <jsontable :table="table" :header="heading"></jsontable>
         </md-content>
         
       </md-step>
 
-      <md-step id="third" to="/create/components/steppers/third" md-label="Third Step">
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias doloribus eveniet quaerat modi cumque quos sed, temporibus nemo eius amet aliquid, illo minus blanditiis tempore, dolores voluptas dolore placeat nulla.</p>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias doloribus eveniet quaerat modi cumque quos sed, temporibus nemo eius amet aliquid, illo minus blanditiis tempore, dolores voluptas dolore placeat nulla.</p>
+      <md-step id="third" md-label="Third Step" :md-done.sync="third">
+        <div class="md-layout md-gutter md-alignment-center">
+          <SubquestionCreation v-for="question in questions" :question="question" :key="question.key"></SubquestionCreation>
+        </div>
       </md-step>
     </md-steppers>
-<!--     <div>
+<!--      <div>
       <p> Steps: {{ steps }} </p>
       <p> First: {{ first }} </p>
       <p> Table: {{ table}} </p>
       <p> Header: {{ heading }} </p>
+      <p> Current: {{active}}</p>
+      <p> Questions: {{questions}}</p>
     </div> -->
   </div>
 </template>
@@ -36,49 +39,41 @@
 import FileUpload from '../components/FileUpload.vue'
 import jsontable from '../components/JSONTable.vue'
 import invertedtable from '../components/InvertedSelectionTable.vue'
+import SubquestionCreation from '../components/SubquestionCreation.vue'
 export default {
   name: 'CreationWizard',
-  components: {FileUpload,jsontable},
+  components: {FileUpload,jsontable,SubquestionCreation},
   methods: {
     setDone(id, index){
       this[id] = true
       if (index){
         this.active = index
       }
+    },
+    setRelevantHeaders(header){
+      this.$store.commit("setRelevantHeaders",header)
+    }
+  },
+  data (){
+    return {
+      
     }
   },
   computed: {
-    steps: {
-      get: function (){
-        return this.$store.state.creation.steps
-      },
-      set: function (newValue) {
-        this.$store.state.creation.steps = newValue
-      }
+    steps (){
+      return this.$store.state.creation.steps
     },
-    first: {
-      get: function (){
-        return this.steps.first
-      },
-      set: function (newValue){
-        this.steps.first = newValue
-      },
+    first(){
+      return this.steps.first
     },
-    second: {
-      get: function (){
-        return this.steps.second
-      },
-      set: function (newValue){
-        this.steps.second = newValue
-      },
+    second (){
+      return this.steps.second
     },
-    active: {
-      get: function (){
-        return this.$store.state.creation.active
-      },
-      set: function (newValue){
-        this.$store.state.creation.active = newValue
-      }
+    third(){
+      return this.steps.third
+    },
+    active(){
+      return this.$store.state.creation.active
     },
     table (){
       return this.$store.state.creation.table.content
@@ -86,15 +81,14 @@ export default {
     heading (){
       return this.$store.state.creation.table.header
     },
-    questions:{
-      get: function (){
+    questions: {
+      get (){
         return this.$store.state.creation.relevant_headers
       },
-      set: function (newValue){
-        this.$store.state.creation.relevant_headers = newValue
+      set(value){
+        this.$store.state.creation.relevant_headers = value
       }
     }
-
   }
 }
 </script>
