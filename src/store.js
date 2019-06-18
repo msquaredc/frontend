@@ -43,15 +43,17 @@ export default new Vuex.Store({
     setRelevantHeaders(state, selection){
       state.creation.relevant_headers = selection
       selection.forEach(element => {
-        state.creation.question[element] = {}
+        state.creation.question[element] = []
       });
       state.creation.steps.second = true
       state.creation.active = "third"
     },
-    addQuestion(state, header, show_element, ask_element){
-      state.question[header].append({'show':show_element, 'ask':ask_element})
+    addQuestion(state, payload){
+      state.creation.question[payload.header].push({'show':payload.show, 'ask':payload.ask})
+    },
+    getQuestions(state, payload){
+
     }
-    
   },
   actions: {
     finish(state){
