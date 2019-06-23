@@ -14,8 +14,10 @@ const vuexLocal = new VuexPersistence({
 export default new Vuex.Store({
   state: {
     creation:{
-      active: 'first',
+      id: null,
+      active: 'zeroth',
       steps:{
+        zeroth: false,
         first: false,
         second: false,
         third: false,
@@ -29,7 +31,7 @@ export default new Vuex.Store({
     },
     codings:{
       current:null,
-      all:[],
+      all:{},
     }
   },
   mutations: {
@@ -37,14 +39,14 @@ export default new Vuex.Store({
       state.creation.table.content = payload.content
       state.creation.table.header = payload.header
       state.creation.steps.first = true
+      payload.header.forEach(element => {
+        state.creation.question[element] = []
+      });
       state.creation.active = "second"
       console.log("New Table set.")
     },
     setRelevantHeaders(state, selection){
       state.creation.relevant_headers = selection
-      selection.forEach(element => {
-        state.creation.question[element] = []
-      });
       state.creation.steps.second = true
       state.creation.active = "third"
     },
@@ -52,7 +54,39 @@ export default new Vuex.Store({
       state.creation.question[payload.header].push({'show':payload.show, 'ask':payload.ask})
     },
     getQuestions(state, payload){
-
+      
+    },
+    setDone(state, payload){
+      state.creation.steps[payload.id] = true
+      if (payload.index){
+        state.creation.active = payload.index
+      }
+    },
+    finishCreation(state){
+      state.codings.current = Object.assign({}, state.creation).id
+      console.log(state.codings.current)
+      console.log(state.creation.id)
+      state.codings.all[state.codings.current] = Object.assign({}, state.creation);
+      state.creation = {
+        id: null,
+        active: 'zeroth',
+        steps:{
+          zeroth: false,
+          first: false,
+          second: false,
+          third: false,
+        },
+        table: {
+          content:null,
+          header:null,
+        },
+        relevant_headers: [],
+        question: {},
+      }
+    },
+    setIdentifier(state,payload){
+      console.log(payload)
+      state.creation.id = payload
     }
   },
   actions: {

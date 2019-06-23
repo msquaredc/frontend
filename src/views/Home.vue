@@ -1,6 +1,6 @@
 <template>
   <div v-if="allCodings.length > 0">
-    All Codings: {{ allCodings }}
+    All Codings: {{ codings }}
   </div>
   <div v-else>
     <md-empty-state
@@ -25,6 +25,9 @@ export default {
     allCodings (){
       return Object.keys(this.$store.state.codings.all)
     },
+    codings (){
+      return this.$store.state.codings
+    }
   }
 }
 </script>

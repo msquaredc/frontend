@@ -1,6 +1,20 @@
 <template>
   <div>
     <md-steppers md-dynamic-height md-linear :md-active-step.sync="active">
+      <md-step id="zeroth" exact md-label="Name it" :md-editable="false" :md-done.sync="zeroth">
+        <md-content>
+          <span class="md-headline">
+            Give your project a name
+          </span>
+          <md-field>
+            <label> What is the name of your project?</label>
+            <md-input v-model="projectIdentifier" required></md-input>
+            <span class="md-error">There is an error</span>
+          </md-field>
+          <md-button class="md-raised md-primary" @click="setIdentifier()">Continue</md-button>
+        </md-content>
+      </md-step>
+
       <md-step id="first" exact md-label="Import Data" :md-editable="false" :md-done.sync="first">
         <FileUpload></FileUpload>
         <!-- <md-button class="md-raised md-primary" @click="setDone('first', 'second')">Continue</md-button> -->
@@ -18,10 +32,11 @@
         
       </md-step>
 
-      <md-step id="third" md-label="Third Step" :md-done.sync="third">
+      <md-step id="third" md-label="Add coding questions" :md-done.sync="third">
         <div class="md-layout md-gutter md-alignment-center">
           <SubquestionCreation v-for="question in questions" :question="question" :key="question.key"></SubquestionCreation>
         </div>
+        <md-button class="md-raised md-primary" @click="finish()">Finish</md-button>
       </md-step>
     </md-steppers>
 <!--      <div>
@@ -31,6 +46,7 @@
       <p> Header: {{ heading }} </p>
       <p> Current: {{active}}</p>
       <p> Questions: {{questions}}</p>
+      <p> Identifier: {{projectIdentifier}}</p>
     </div> -->
   </div>
 </template>
@@ -45,32 +61,41 @@ export default {
   components: {FileUpload,jsontable,SubquestionCreation},
   methods: {
     setDone(id, index){
-      this[id] = true
-      if (index){
-        this.active = index
-      }
+      this.$store.commit("setDone",{'id':id,'index':index})
     },
     setRelevantHeaders(header){
       this.$store.commit("setRelevantHeaders",header)
+    },
+    finish(){
+      this.$store.commit("finishCreation")
+      this.$router.push({path:"/"})
+    },
+    setIdentifier(){
+      console.log(this.projectIdentifier)
+      this.$store.commit("setIdentifier",this.projectIdentifier)
+      this.setDone("zeroth","first")
     }
   },
   data (){
     return {
-      
+      projectIdentifier:null
     }
   },
   computed: {
     steps (){
       return this.$store.state.creation.steps
     },
+    zeroth(){
+      return this.$store.state.creation.steps.zeroth
+    },
     first(){
-      return this.steps.first
+      return this.$store.state.creation.steps.first
     },
     second (){
-      return this.steps.second
+      return this.$store.state.creation.steps.second
     },
     third(){
-      return this.steps.third
+      return this.$store.state.creation.steps.third
     },
     active(){
       return this.$store.state.creation.active
@@ -81,13 +106,8 @@ export default {
     heading (){
       return this.$store.state.creation.table.header
     },
-    questions: {
-      get (){
-        return this.$store.state.creation.relevant_headers
-      },
-      set(value){
-        this.$store.state.creation.relevant_headers = value
-      }
+    questions (){
+      return this.$store.state.creation.relevant_headers
     }
   }
 }

@@ -16,34 +16,26 @@
             <!-- <md-subheader>Phone</md-subheader> -->
             <md-list-item v-for="subquestion in subquestions" :key="subquestion.key">
                 <div class="md-list-item-text">
-                    <span>Text: {{ subquestion }}</span>
-                    <span>Mobile</span>
+                    <span>{{ subquestion.show }}</span>
+                    <span v-if="subquestion.ask.type === 'string'"> Textbox </span>
+                    <span v-else-if="subquestion.ask.type ==='number'"> Number field </span>
+                    <span v-else> {{subquestion.ask}}</span>
                 </div>
             </md-list-item>
-            <md-speed-dial class="md-bottom-right md-mini">
-                <md-speed-dial-target>
-                    <md-icon>add</md-icon>
-                </md-speed-dial-target>
-            </md-speed-dial>
         </md-list> 
         <div v-else> 
             <p> No Question yet</p>
-            <md-speed-dial class="md-bottom-right">
-                <md-speed-dial-target>
-                    <md-icon>add</md-icon>
-                </md-speed-dial-target>
-            </md-speed-dial>
         </div>
         <md-dialog :md-active.sync="active">
             <md-dialog-title>Preferences</md-dialog-title>
             <md-dialog-content>
                 <md-field>
                     <label>Label</label>
-                    <md-input v-model="label"></md-input>
+                    <md-input v-model="label" required></md-input>
+                    <span class="md-error">There is an error</span>
                 </md-field>
                 <md-radio v-model="inputType" value="string"> Text input</md-radio>
                 <md-radio v-model="inputType" value="number"> Number input</md-radio>
-                <md-radio v-model="inputType" value="range" >Range</md-radio>
                 <md-radio v-model="inputType" value="boolean">Yes/No</md-radio>
                 <md-radio v-model="inputType" value="choice">Choice</md-radio>
 
@@ -108,9 +100,28 @@ export default {
             }
         },
         addCodingQuestion: function (){
-            this.active = false;
-            if (this.inputType === 'string'){
-                this.$store.commit('addQuestion',{'show':this.label,'ask':"Nix",'header':this.question})
+            if (this.label && this.inputType){
+                this.active = false;
+                var res = {'show':this.label,'ask':{'type':this.inputType},'header':this.question}
+                if (this.inputType === 'number'){
+                    if (this.numberUseRange){
+                        res.ask.lowerBound = this.lowerBound
+                        res.ask.upperBound = this.upperBound
+                    }
+                }
+                this.$store.commit('addQuestion',res)
+                this.inputType = null
+                this.label = null
+                this.numberUseRange = false
+                this.upperBound = 10 
+                this.lowerBound = 0
+                this.choices = []
+                this.currentChoice= null
+            }
+            else {
+                if(!this.label){
+
+                }
             }
         }
     },
