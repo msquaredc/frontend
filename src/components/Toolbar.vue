@@ -8,7 +8,7 @@
               <md-icon>menu</md-icon>
             </md-button>
 
-            <span class="md-title">My Title</span>
+            <span class="md-title">M²C</span>
           </div>
 
           <div class="md-toolbar-section-end">
@@ -64,15 +64,14 @@
 <style lang="scss" scoped>
   .md-app {
     border: 1px solid rgba(#000, .12);
+    min-height: 100vh;
+    min-width: 100vh;
   }
 
    // Demo purposes only
   .md-drawer {
     width: 230px;
     max-width: calc(100vw - 125px);
-  }
-  .md-app{
-    max-height: 99vh;
   }
 </style>
 

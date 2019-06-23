@@ -28,6 +28,7 @@ export default new Vuex.Store({
       },
       relevant_headers: [],
       question: {},
+      answer: {},
     },
     codings:{
       current:null,
@@ -41,6 +42,7 @@ export default new Vuex.Store({
       state.creation.steps.first = true
       payload.header.forEach(element => {
         state.creation.question[element] = []
+        state.creation.answer[element] = []
       });
       state.creation.active = "second"
       console.log("New Table set.")

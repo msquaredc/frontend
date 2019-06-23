@@ -1,6 +1,11 @@
 <template>
   <div v-if="allCodings.length > 0">
-    All Codings: {{ codings }}
+    <div class="md-layout md-gutter md-alignment-center">
+      <div class="md-layout-item" v-for="coding in codings.all" :key="coding.key">
+        <Coding :coding="coding.id">
+        </Coding>
+      </div>
+    </div>
   </div>
   <div v-else>
     <md-empty-state
@@ -15,11 +20,12 @@
 <script>
 // @ is an alias to /src
 import HelloWorld from '@/components/HelloWorld.vue'
+import Coding from '@/components/Coding.vue'
 
 export default {
   name: 'home',
   components: {
-    HelloWorld
+    HelloWorld, Coding
   },
   computed: {
     allCodings (){

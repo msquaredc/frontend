@@ -1,9 +1,16 @@
 <template>
   <div>
   <Toolbar>
-    <span class="md-content">
+    <div class="page-container">
+      <div class="md-layout md-gutter">
+    <div class="md-layout-item md-size-15 md-small-hide"></div>
+    <div class="md-layout-item">
       <router-view></router-view>
-    </span>
+      </div>
+    <div class="md-layout-item md-size-15 md-small-hide"></div>
+  </div>
+    
+    </div>
   </Toolbar>
   </div>
 </template>
@@ -43,9 +50,12 @@
     min-width: 100vh;
     overflow: hidden;
     position: relative;
-    border: 1px solid rgba(#000, .12);
+//    border: 1px solid rgba(#000, .12);
   }
   .md-content {
+    padding: 16px;
+  }
+  .router-view{
     padding: 16px;
   }
 </style>
