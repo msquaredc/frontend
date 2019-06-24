@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'
 import Index from './views/Index.vue'
 import CreationWizard from './views/CreationWizard.vue'
+import Code from './views/Code.vue'
 
 Vue.use(Router)
 
@@ -25,6 +26,11 @@ export default new Router({
       path: '/index',
       name: 'start',
       component: Index
+    },
+    {
+      path: '/code',
+      name: 'code',
+      component: Code
     },
     {
       path: '/create/*',

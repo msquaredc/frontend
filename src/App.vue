@@ -47,7 +47,8 @@
 
 <style lang="scss" scoped>
   .page-container {
-    min-width: 100vh;
+    max-width: 100vw;
+    max-height: 100vh;
     overflow: hidden;
     position: relative;
 //    border: 1px solid rgba(#000, .12);

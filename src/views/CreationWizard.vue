@@ -1,6 +1,6 @@
 <template>
   <div>
-    <md-steppers md-dynamic-height md-linear :md-active-step.sync="active">
+    <md-steppers md-vertical md-linear :md-active-step.sync="active">
       <md-step id="zeroth" exact md-label="Name it" :md-editable="false" :md-done.sync="zeroth">
         <md-content>
           <span class="md-headline">
@@ -114,6 +114,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .md-steppers {
+    max-width: 100%
+  }
   .md-checkbox {
     display: flex;
   }

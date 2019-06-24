@@ -14,7 +14,9 @@
 
       <md-card-actions>
         <md-button class="md-primary md-raised ">View Project</md-button>
+        <router-link :to="{name:'code', params:{coding:coding}}" append>
         <md-button class="md-primary md-raised ">Code</md-button>
+        </router-link>
       </md-card-actions>
     </md-card>
     

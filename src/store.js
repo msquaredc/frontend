@@ -84,6 +84,7 @@ export default new Vuex.Store({
         },
         relevant_headers: [],
         question: {},
+        answer: {},
       }
     },
     setIdentifier(state,payload){

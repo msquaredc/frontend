@@ -64,8 +64,8 @@
 <style lang="scss" scoped>
   .md-app {
     border: 1px solid rgba(#000, .12);
-    min-height: 100vh;
-    min-width: 100vh;
+    height: 100vh;
+    width: 100vw;
   }
 
    // Demo purposes only
