@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import VuexPersistence from 'vuex-persist'
 import localforage from 'localforage'
+import {Project,Timeline} from './js/Project'
 
 Vue.use(Vuex)
 
@@ -13,29 +14,26 @@ const vuexLocal = new VuexPersistence({
 
 export default new Vuex.Store({
   state: {
-    creation:{
-      id: null,
-      active: 'zeroth',
-      steps:{
-        zeroth: false,
-        first: false,
-        second: false,
-        third: false,
-      },
-      table: {
-        content:null,
-        header:null,
-      },
-      relevant_headers: [],
-      question: {},
-      answer: {},
-    },
+    creation: new Project(),
     codings:{
       current:null,
       all:{},
     }
   },
   mutations: {
+    restoreTimeline(state,payload){
+      if (state.codings.all[payload]){
+        if (!state.codings.all[payload].codingTimeline instanceof Timeline){
+          state.codings.all[payload].codingTimeline = new Timeline().fromObject(state.codings.all[payload].codingTimeline)
+        }
+      }
+    },
+    code_next(state,payload){
+      state.codings.all[payload.id].codingTimeline = new Timeline().fromObject(state.codings.all[payload.id].codingTimeline).moveForwards(payload.value);
+    },
+    code_previous(state,payload){
+      state.codings.all[payload.id].codingTimeline = new Timeline().fromObject(state.codings.all[payload.id].codingTimeline).moveBackwards(payload.value);
+    },
     setCurrentTable(state, payload) {
       state.creation.table.content = payload.content
       state.creation.table.header = payload.header
@@ -51,6 +49,7 @@ export default new Vuex.Store({
       state.creation.relevant_headers = selection
       state.creation.steps.second = true
       state.creation.active = "third"
+      state.creation.setQuestions(selection)
     },
     addQuestion(state, payload){
       state.creation.question[payload.header].push({'show':payload.show, 'ask':payload.ask})
@@ -69,23 +68,8 @@ export default new Vuex.Store({
       console.log(state.codings.current)
       console.log(state.creation.id)
       state.codings.all[state.codings.current] = Object.assign({}, state.creation);
-      state.creation = {
-        id: null,
-        active: 'zeroth',
-        steps:{
-          zeroth: false,
-          first: false,
-          second: false,
-          third: false,
-        },
-        table: {
-          content:null,
-          header:null,
-        },
-        relevant_headers: [],
-        question: {},
-        answer: {},
-      }
+      let p = new Project()
+      state.creation = p
     },
     setIdentifier(state,payload){
       console.log(payload)
@@ -95,7 +79,8 @@ export default new Vuex.Store({
   actions: {
     finish(state){
       return state.question;
-    }
+    },
   },
   plugins: [vuexLocal.plugin],
 })
+

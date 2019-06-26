@@ -28,9 +28,10 @@ export default new Router({
       component: Index
     },
     {
-      path: '/code',
+      path: '/code/:id/:index',
       name: 'code',
-      component: Code
+      component: Code,
+      props: castRouteParams
     },
     {
       path: '/create/*',
@@ -39,3 +40,10 @@ export default new Router({
     },
   ]
 })
+
+function castRouteParams(route) {
+  return {
+    index:Number(route.params.index), 
+    id: route.params.id,
+  };
+}

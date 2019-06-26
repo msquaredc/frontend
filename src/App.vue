@@ -11,7 +11,9 @@
   </div>
     
     </div>
+    <!-- <p> DEBUGINFO: {{myState}}</p> -->
   </Toolbar>
+  
   </div>
 </template>
 
@@ -40,6 +42,9 @@
     computed: {
       creationStep (){
         return this.$store.state.creation.step
+      },
+      myState(){
+        return this.$store.state
       }
     }
   }

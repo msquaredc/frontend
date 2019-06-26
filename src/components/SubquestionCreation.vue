@@ -102,12 +102,16 @@ export default {
         addCodingQuestion: function (){
             if (this.label && this.inputType){
                 this.active = false;
-                var res = {'show':this.label,'ask':{'type':this.inputType},'header':this.question}
+                var res = {'show':this.label,'ask':{'type':this.inputType,'model':null},'header':this.question}
                 if (this.inputType === 'number'){
+                    res.ask.model = 0
                     if (this.numberUseRange){
                         res.ask.lowerBound = this.lowerBound
                         res.ask.upperBound = this.upperBound
                     }
+                }
+                else if (this.inputType === 'boolean'){
+                    res.ask["model"]= false
                 }
                 this.$store.commit('addQuestion',res)
                 this.inputType = null
