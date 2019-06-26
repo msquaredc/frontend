@@ -100,6 +100,9 @@ let Timeline = class Timeline{
     length(){
         return this.previous.length + 1 + this.next.length
     }
+    proximity(){
+        return [...Array(this.length).keys()].slice(Math.max(this.currentIndex()-2,0),Math.min(this.currentIndex()+2),this.length()-1)
+    }
     append(element){
         if (!this.current){
             this.current = element

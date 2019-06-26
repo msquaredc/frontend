@@ -8,8 +8,9 @@
     <div class="md-title container6 responseblock">
       <p>" {{response}} "</p>
     </div>
-    <p> All Codings: {{allCodings}}</p>
+    <!-- <p> All Codings: {{allCodings}}</p> -->
     <p> {{index}} </p> 
+    <p> Done {{done}} </p>
     <p> {{ questionsToShow }} </p>
     <!-- <p> Project : {{ project }} </p> -->
     <!-- <p v-for="entry in project" :key="entry.key">
@@ -30,15 +31,17 @@
         <p> Unknown type {{codingQuestion.ask.type}}</p>
       </div>
       <p>Coding Question: {{ codingQuestion}}</p>
+      Proximity: {{proximity}}
     </div>
     <md-content class="container6 md-primary">
       <md-button class="md-icon-button md-raised" v-on:click.native="first()"> <md-icon>first_page</md-icon> </md-button>
       <md-button class="md-icon-button md-raised" v-on:click.native="previous()"> <md-icon>chevron_left</md-icon> </md-button>
       <div class="spacer">
       </div>
-      <div v-for="beforeItem in before" :key = "beforeItem.key">
-        <md-button class="md-icon-button">
-        {{ beforeItem }}
+      
+      <div v-for="proximityItem in proximity" :key = "proximityItem.key">
+        <md-button class="md-icon-button md-raised">
+        {{ proximityItem+1}}
         </md-button>
       </div>
       <div class="spacer">
@@ -72,20 +75,23 @@ export default {
       this.$store.commit("code_next",{id: this.id,value:this.codingQuestions})
     },
     last(){},
-  },
-  computed: {
-    done(){
+    safeTimeline(command,payload,elseVal){
       if (this.project){
         if (this.project.codingTimeline){
           this.$store.commit("restoreTimeline",this.id)
           if (this.project.codingTimeline instanceof Timeline){
-            return this.project.codingTimeline.isDone()
+            return window["this"]["project"]["codingTimeline"][command](payload)
           }
         }
       }
       else{
-        return true
+        return elseVal
       }
+    },
+  },
+  computed: {
+    done(){
+      return this.safeTimeline("isDone",null,false)
     },
     allCodings(){
       return this.$store.state
@@ -116,6 +122,17 @@ export default {
       else{
         return null
       }
+    },
+    proximity(){
+      if (this.project){
+        if (this.project.codingTimeline){
+          this.$store.commit("restoreTimeline",this.id)
+          if (this.project.codingTimeline instanceof Timeline){
+            return this.project.codingTimeline.proximity()
+          }
+        }
+      }
+      return [0,1,2,3,4]
     },
   }
 }
