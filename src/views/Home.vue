@@ -2,8 +2,7 @@
   <div v-if="allCodings.length > 0">
     <div class="md-layout md-gutter md-alignment-center">
       <div class="md-layout-item" v-for="coding in codings.all" :key="coding.key">
-        <Coding :coding="coding.id">
-        </Coding>
+        <Coding :id="coding.id"></Coding>
       </div>
     </div>
   </div>
@@ -11,29 +10,31 @@
     <md-empty-state
       md-icon="devices_other"
       md-label="Create your first project"
-      md-description="Creating project, you'll be able to upload your data and collaborate with people.">
+      md-description="Creating project, you'll be able to upload your data and collaborate with people."
+    >
       <md-button class="md-primary md-raised" to="/create/">Create first project</md-button>
-  </md-empty-state>
+    </md-empty-state>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-import Coding from '@/components/Coding.vue'
+import HelloWorld from "@/components/HelloWorld.vue";
+import Coding from "@/components/Coding.vue";
 
 export default {
-  name: 'home',
+  name: "home",
   components: {
-    HelloWorld, Coding
+    HelloWorld,
+    Coding
   },
   computed: {
-    allCodings (){
-      return Object.keys(this.$store.state.codings.all)
+    allCodings() {
+      return Object.keys(this.$store.state.codings.all);
     },
-    codings (){
-      return this.$store.state.codings
+    codings() {
+      return this.$store.state.codings;
     }
   }
-}
+};
 </script>

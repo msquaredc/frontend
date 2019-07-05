@@ -1,154 +1,123 @@
 <template>
-<div>
-  <div v-if="done">
-    <p> You're done </p>
-  </div>
-  <div v-else>
+  <div>
+    <div v-if="done">
+      <p>You're done</p>
+    </div>
     <div class="md-headline container6">ID:{{ id }}</div>
     <div class="md-title container6 responseblock">
       <p>" {{response}} "</p>
     </div>
     <!-- <p> All Codings: {{allCodings}}</p> -->
-    <p> {{index}} </p> 
-    <p> Done {{done}} </p>
-    <p> {{ questionsToShow }} </p>
-    <!-- <p> Project : {{ project }} </p> -->
+    <p>{{index}}</p>
+    <p>Done {{done}}</p>
+    <!-- <p>Project : {{ project }}</p> -->
     <!-- <p v-for="entry in project" :key="entry.key">
       {{entry}}
-    </p> -->
-  <p> Coding questions: {{ codingQuestions }}</p>
-  <p> Currentd {{project.codingTimeline.current}}
-  <!-- <p> {{project.codingTimeline}}</p> -->
-  
-    <div v-for="codingQuestion in codingQuestions" :key = "codingQuestion.key">
+    </p>-->
+    <p>Previous: {{codingTimeline.previous}}</p>
+    <p>Current {{project.codingTimeline.current}}</p>
+    <p>Next: {{codingTimeline.next}}</p>
+    <div v-for="codingQuestion in currentQuestion.questions" :key="codingQuestion.key">
       <div v-if="codingQuestion.ask.type == 'string'">
-        <p> You asked for a sting </p>
+        <p>You asked for a sting</p>
       </div>
       <div v-else-if="codingQuestion.ask.type == 'boolean'">
         <md-checkbox v-model="codingQuestion.ask.model">{{codingQuestion.show }}</md-checkbox>
       </div>
       <div v-else>
-        <p> Unknown type {{codingQuestion.ask.type}}</p>
+        <p>Unknown type {{codingQuestion.ask.type}}</p>
       </div>
       <p>Coding Question: {{ codingQuestion}}</p>
       Proximity: {{proximity}}
     </div>
     <md-content class="container6 md-primary">
-      <md-button class="md-icon-button md-raised" v-on:click.native="first()"> <md-icon>first_page</md-icon> </md-button>
-      <md-button class="md-icon-button md-raised" v-on:click.native="previous()"> <md-icon>chevron_left</md-icon> </md-button>
-      <div class="spacer">
+      <md-button class="md-icon-button md-raised" v-on:click.native="first()">
+        <md-icon>first_page</md-icon>
+      </md-button>
+      <md-button class="md-icon-button md-raised" v-on:click.native="previous()">
+        <md-icon>chevron_left</md-icon>
+      </md-button>
+      <div class="spacer"></div>
+
+      <div v-for="proximityItem in proximity" :key="proximityItem.key">
+        <md-button class="md-icon-button md-raised">{{ proximityItem+1}}</md-button>
       </div>
-      
-      <div v-for="proximityItem in proximity" :key = "proximityItem.key">
-        <md-button class="md-icon-button md-raised">
-        {{ proximityItem+1}}
-        </md-button>
-      </div>
-      <div class="spacer">
-      </div>
-      <md-button class="md-icon-button md-raised" v-on:click.native="next()"> <md-icon>chevron_right</md-icon> </md-button>
-      <md-button class="md-icon-button md-raised" v-on:click.native="last()"> <md-icon>last_page</md-icon> </md-button>
+      <div class="spacer"></div>
+      <md-button class="md-icon-button md-raised" v-on:click.native="next()">
+        <md-icon>chevron_right</md-icon>
+      </md-button>
+      <md-button class="md-icon-button md-raised" v-on:click.native="last()">
+        <md-icon>last_page</md-icon>
+      </md-button>
     </md-content>
+    <ProjectResult :id="id"></ProjectResult>
   </div>
-  
-    
-</div>
 </template>
 
 
 <script>
-import {Project,Timeline} from '../js/Project'
+import { Project, Timeline } from "../js/Project";
+import ProjectResult from "../components/ProjectResult.vue";
 export default {
-  name: 'Code',
+  name: "Code",
   props: {
-    id:String,
-    index:Number
+    id: String,
+    index: Number
   },
-  methods:{
-    first(){
-      console.log("First")
+  components: { ProjectResult },
+  methods: {
+    first() {},
+    previous() {
+      this.$store.dispatch("code_previous", {
+        id: this.id,
+        value: this.currentQuestion
+      });
     },
-    previous(){
-      this.$store.commit("code_previous",{id: this.id,value:this.codingQuestions})
+    next() {
+      this.$store.dispatch("code_next", {
+        id: this.id,
+        value: this.currentQuestion
+      });
     },
-    next(){
-      this.$store.commit("code_next",{id: this.id,value:this.codingQuestions})
-    },
-    last(){},
-    safeTimeline(command,payload,elseVal){
-      if (this.project){
-        if (this.project.codingTimeline){
-          this.$store.commit("restoreTimeline",this.id)
-          if (this.project.codingTimeline instanceof Timeline){
-            return window["this"]["project"]["codingTimeline"][command](payload)
-          }
-        }
-      }
-      else{
-        return elseVal
-      }
-    },
+    last() {}
   },
   computed: {
-    done(){
-      return this.safeTimeline("isDone",null,false)
+    done() {
+      return this.project.codingTimeline.isDone();
     },
-    allCodings(){
-      return this.$store.state
+    allCodings() {
+      return this.$store.state;
     },
-    project(){
-      return this.$store.state.codings.all[this.id]
+    project() {
+      return this.$store.getters.getProject(this.id);
     },
-    response(){
-      if (this.project){
-        return this.project.codingTimeline.current.response
-      }
-      else{
-        return "Error while loading response."
-      }
+    currentQuestion() {
+      return this.$store.getters.getCodingTimeline(this.id).current;
     },
-    codingQuestions(){
-       if (this.project){
-        return this.project.codingTimeline.current.coding_questions
-      }
-      else{
-        return null
-      }
+    codingTimeline() {
+      return this.$store.getters.getCodingTimeline(this.id);
     },
-    questionsToShow(){
-      if (this.project){
-        return this.project.relevant_headers
-      }
-      else{
-        return null
-      }
+    response() {
+      return this.currentQuestion.response;
     },
-    proximity(){
-      if (this.project){
-        if (this.project.codingTimeline){
-          this.$store.commit("restoreTimeline",this.id)
-          if (this.project.codingTimeline instanceof Timeline){
-            return this.project.codingTimeline.proximity()
-          }
-        }
-      }
-      return [0,1,2,3,4]
-    },
+    proximity() {
+      this.codingTimeline.proximity();
+    }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
-.responseblock{
-  background-color: #FA6;
-  
+.responseblock {
+  background-color: #fa6;
 }
 .container6 {
   padding: 16pt;
   display: flex;
   align-items: center;
-  justify-content: center }
-.spacer{
+  justify-content: center;
+}
+.spacer {
   padding: 8pt;
 }
 </style>

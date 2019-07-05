@@ -1,62 +1,54 @@
 <template>
-<div>
+  <div>
     <md-card>
       <md-card-header>
-        <div class="md-title">{{ coding }}</div>
+        <div class="md-title">{{ id }}</div>
       </md-card-header>
 
       <md-card-content>
-<!--         {{ codingData }} -->
-        <md-progress-bar md-mode="determinate" :md-value="questionProgress/questionAll*100"></md-progress-bar>
-        <p> {{ questionProgress }} of {{ questionAll }} Questions coded. <p>
-        <p> Overall progress: {{ questionProgress/questionAll*100}} % </p>
+        <!--         {{ codingData }} -->
+        <md-progress-bar md-mode="determinate" :md-value="progress/length*100"></md-progress-bar>
+        <p>{{ progress }} of {{ length }} Questions coded.</p>
+        <p></p>
+        <p>Overall progress: {{ progress/length*100}} %</p>
       </md-card-content>
 
       <md-card-actions>
-        <md-button class="md-primary md-raised ">View Project</md-button>
-        <router-link :to="{name:'code', params:{id:coding,index:-1}}" append>
-        <md-button class="md-primary md-raised ">Code</md-button>
+        <md-button class="md-primary md-raised">View Project</md-button>
+        <router-link :to="{name:'code', params:{id:id,index:-1}}" append>
+          <md-button class="md-primary md-raised">Code</md-button>
         </router-link>
       </md-card-actions>
     </md-card>
-    
-</div>
+  </div>
 </template>
 
 
 <script>
 export default {
-  name: 'Coding',
+  name: "Coding",
   props: {
-    coding: String
+    id: String
   },
   computed: {
-    codingData (){
-      return this.$store.state.codings.all[this.coding]
+    project() {
+      return this.$store.getters.getProject(this.id);
     },
-    questionAll(){
-        let prog = 0
-        this.$store.state.codings.all[this.coding].relevant_headers.forEach(header => {
-            prog += this.$store.state.codings.all[this.coding].question[header].length
-        });
-        return prog*this.$store.state.codings.all[this.coding].table.content.length
+    progress() {
+      return this.project.getProgress();
     },
-    questionProgress(){
-        let prog = 0
-        this.$store.state.codings.all[this.coding].relevant_headers.forEach(header => {
-            prog += this.$store.state.codings.all[this.coding].answer[header].length
-        });
-        return prog
+    length() {
+      return this.project.codingTimeline.length();
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
-  .md-card {
-    width: 320px;
-    margin: 4px;
-    display: inline-block;
-    vertical-align: top;
-  }
+.md-card {
+  width: 320px;
+  margin: 4px;
+  display: inline-block;
+  vertical-align: top;
+}
 </style>

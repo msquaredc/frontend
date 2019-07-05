@@ -4,6 +4,7 @@ import Home from './views/Home.vue'
 import Index from './views/Index.vue'
 import CreationWizard from './views/CreationWizard.vue'
 import Code from './views/Code.vue'
+import CodingWizard from './views/CodingWizard.vue'
 
 Vue.use(Router)
 
@@ -34,6 +35,12 @@ export default new Router({
       props: castRouteParams
     },
     {
+      path: '/coding/:id',
+      name: 'code',
+      component: CodingWizard,
+      props: true
+    },
+    {
       path: '/create/*',
       name: 'create',
       component: CreationWizard
@@ -43,7 +50,7 @@ export default new Router({
 
 function castRouteParams(route) {
   return {
-    index:Number(route.params.index), 
+    index: Number(route.params.index),
     id: route.params.id,
   };
 }
