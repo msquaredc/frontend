@@ -5,6 +5,7 @@ import Index from './views/Index.vue'
 import CreationWizard from './views/CreationWizard.vue'
 import Code from './views/Code.vue'
 import CodingWizard from './views/CodingWizard.vue'
+import Result from './views/Result.vue'
 
 Vue.use(Router)
 
@@ -36,7 +37,7 @@ export default new Router({
     },
     {
       path: '/coding/:id',
-      name: 'code',
+      name: 'code2',
       component: CodingWizard,
       props: true
     },
@@ -45,6 +46,12 @@ export default new Router({
       name: 'create',
       component: CreationWizard
     },
+    {
+      path: '/result/:id',
+      name: 'result',
+      component: Result,
+      props: true
+    }
   ]
 })
 

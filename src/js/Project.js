@@ -69,7 +69,6 @@ let Project = class Project {
     }
     fromObject(obj) {
         let p = new Project()
-        console.log(obj)
         p.active = obj.active
         p.steps = obj.steps
         p.table = obj.table
@@ -79,25 +78,29 @@ let Project = class Project {
         p.codingTimeline = new Timeline().fromObject(obj.codingTimeline)
         return p
     }
-    export() {
-        let res = {}
-        this.codingTimeline.all().forEach(responseCoding => {
-            this.getIrrelevantHeader(responseCoding.question, responseCoding.response).forEach(actualRow => {
-                responseCoding.coding_questions.forEach(codingQuestion => {
+    *export(done) {
+        let responseCoding;
+        for (responseCoding of this.codingTimeline.all()) {
+            let actualRow;
+            for (actualRow of this.getIrrelevantHeader(responseCoding.question, responseCoding.response)) {
+                let codingQuestion;
+                for (codingQuestion of responseCoding.coding_questions) {
                     let tmp = {}
-                    project.getAllIrrelevantHeaders().forEach(irrelevantHeader => {
+                    let irrelevantHeader
+                    for (irrelevantHeader of this.getAllIrrelevantHeaders()) {
                         tmp[irrelevantHeader] = actualRow[irrelevantHeader]
-                    })
-                    tmp["done"] = responseCoding.done
+                    }
+                    if (done) {
+                        tmp["done"] = responseCoding.done
+                    }
                     tmp["question"] = responseCoding.question
                     tmp["response"] = responseCoding.response
                     tmp["codingQuestion"] = codingQuestion.show
                     tmp["codingAnswer"] = codingQuestion.ask.model
-                    res.push(tmp)
-                })
-            })
-        })
-        return res
+                    yield tmp
+                }
+            }
+        }
     }
 }
 
@@ -163,11 +166,40 @@ let Timeline = class Timeline {
     currentIndex() {
         return this.previous.length
     }
+    setCurrentIndex(index) {
+        if (index >= 0 && index < this.length) {
+            while (this.currentIndex() < index) {
+                temp = this.current
+                this.current = this.next.pop()
+                this.previous.push(temp)
+
+            }
+            while (this.currentIndex() > index) {
+                temp = this.current
+                this.current = this.previous.pop()
+                this.next.push(temp)
+
+            }
+        }
+    }
     length() {
         return this.previous.length + 1 + this.next.length
     }
     proximity() {
-        return [...Array(this.length).keys()].slice(Math.max(this.currentIndex() - 2, 0), Math.min(this.currentIndex() + 2), this.length() - 1)
+        let res = []
+        let dist;
+        const index = this.currentIndex()
+        let amount = Math.min(this.length(), 5)
+        res.push(index)
+        for (dist = 1; res.length < amount; dist++) {
+            if (index - dist >= 0) {
+                res.unshift(index - dist)
+            }
+            if (index + dist < this.length()) {
+                res.push(index + dist)
+            }
+        }
+        return res
     }
     append(element) {
         if (!this.current) {
@@ -189,6 +221,10 @@ let Timeline = class Timeline {
         else {
             return []
         }
+    }
+    getByIndex(index) {
+        this.setCurrentIndex(index)
+        return this.all()[index]
     }
 }
 

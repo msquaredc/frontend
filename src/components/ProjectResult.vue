@@ -1,8 +1,8 @@
 <template>
   <div>
     <span class="md-headline">Your Table:</span>
-    <p>AllCodings: {{allCodings}}</p>
-    <p>Timeline: {{project.codingTimeline}}</p>
+    <!-- <p>AllCodings: {{allCodings}}</p>
+    <p>Timeline: {{project.codingTimeline}}</p>-->
     <!--    <p>ID: {{ id }}</p>
     <p>Relevant Headers: {{project.relevant_headers}}</p>
     <p>
@@ -12,13 +12,18 @@
         <md-table-head v-for="title in header" :key="title.key">{{title}}</md-table-head>
       </md-table-row>
 
-      <!--  <md-table-row v-for="row in project.export()" :key="row.key">
+      <md-table-row v-for="row in Array.from(project.export(done))" :key="row.key">
         <md-table-cell
           v-for="irrelevantHeader in project.getAllIrrelevantHeaders()"
           :key="irrelevantHeader.key"
         >{{row[irrelevantHeader]}}</md-table-cell>
-      </md-table-row>-->
-      <div v-for="ResponseCoding in allCodings" :key="ResponseCoding.key">
+        <md-table-cell v-if="done">{{row["done"]}}</md-table-cell>
+        <md-table-cell>{{row["question"]}}</md-table-cell>
+        <md-table-cell>{{row["response"]}}</md-table-cell>
+        <md-table-cell>{{row["codingQuestion"]}}</md-table-cell>
+        <md-table-cell>{{row["codingAnswer"] }}</md-table-cell>
+      </md-table-row>
+      <!-- <div v-for="ResponseCoding in allCodings" :key="ResponseCoding.key">
         <div
           v-for="ActualRow in project.getIrrelevantHeader(ResponseCoding.question,ResponseCoding.response)"
           :key="ActualRow.key"
@@ -38,7 +43,7 @@
             <md-table-cell>{{CodingQuestion.ask.model}}</md-table-cell>
           </md-table-row>
         </div>
-      </div>
+      </div>-->
     </md-table>
   </div>
 </template>
@@ -47,7 +52,9 @@
 export default {
   name: "ProjectResult",
   data: function() {
-    return {};
+    return {
+      done: true
+    };
   },
   props: ["id"],
   computed: {

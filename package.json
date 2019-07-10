@@ -10,6 +10,7 @@
   "dependencies": {
     "blob": "0.0.5",
     "core-js": "^2.6.9",
+    "downloadjs": "^1.4.7",
     "file-saver": "^2.0.2",
     "localforage": "^1.7.3",
     "node-sass": "^4.12.0",

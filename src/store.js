@@ -36,6 +36,9 @@ export default new Vuex.Store({
     },
     getAllIrrelevantHeaders: (state, getters) => (id) => {
       return getters.getProject(id).getAllIrrelevantHeaders()
+    },
+    getCurrentIndex: (state, getters) => (id) => {
+
     }
   },
   mutations: {
@@ -71,9 +74,6 @@ export default new Vuex.Store({
     addQuestion(state, payload) {
       state.creation.question[payload.header].push({ 'show': payload.show, 'ask': payload.ask })
     },
-    getQuestions(state, payload) {
-
-    },
     setDone(state, payload) {
       state.creation.steps[payload.id] = true
       if (payload.index) {
@@ -99,6 +99,11 @@ export default new Vuex.Store({
     },
     code_previous(state, payload) {
       state.commit("setCodingTimeline", { id: payload.id, value: state.getters.getCodingTimeline(payload.id).moveBackwards(payload.value) })
+    },
+    setCurrentIndex(state, payload) {
+      let timeline = state.getters.getCodingTimeline(payload.id)
+      timeline.setCurrentIndex(payload.index)
+      state.commit("setCodingTimeline", { id: payload.id, value: timeline })
     }
   },
   plugins: [vuexLocal.plugin],
