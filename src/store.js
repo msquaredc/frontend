@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import VuexPersistence from 'vuex-persist'
 import localforage from 'localforage'
 import { Project, Timeline } from './js/Project'
+import { platform } from 'os';
 
 Vue.use(Vuex)
 
@@ -32,13 +33,17 @@ export default new Vuex.Store({
       return state.codings.all[projectId].codingTimeline.current
     },
     getCodingTimeline: (state, getters) => (id) => {
-      return getters.getProject(id).codingTimeline
+      console.log("Storage.getCodingTimeline --> Start")
+      let tmp = getters.getProject(id).codingTimeline
+      console.log("Storage.getCodingTimeline --> Return")
+      return tmp
     },
     getAllIrrelevantHeaders: (state, getters) => (id) => {
       return getters.getProject(id).getAllIrrelevantHeaders()
     },
     getCurrentIndex: (state, getters) => (id) => {
-
+      console.log("Storage.getCurrentIndex")
+      return getters.getCodingTimeline(id).currentIndex()
     }
   },
   mutations: {
@@ -95,15 +100,19 @@ export default new Vuex.Store({
       return state.question;
     },
     code_next(state, payload) {
+      console.log("Storage.code_next")
       state.commit("setCodingTimeline", { id: payload.id, value: state.getters.getCodingTimeline(payload.id).moveForwards(payload.value) })
     },
     code_previous(state, payload) {
+      console.log("Storage.code_previous")
       state.commit("setCodingTimeline", { id: payload.id, value: state.getters.getCodingTimeline(payload.id).moveBackwards(payload.value) })
     },
     setCurrentIndex(state, payload) {
+      console.log("Storage.setCurrentIndex -> Start")
       let timeline = state.getters.getCodingTimeline(payload.id)
       timeline.setCurrentIndex(payload.index)
       state.commit("setCodingTimeline", { id: payload.id, value: timeline })
+      console.log("Storage.setCurrentIndex -> End")
     }
   },
   plugins: [vuexLocal.plugin],

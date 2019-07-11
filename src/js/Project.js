@@ -164,41 +164,45 @@ let Timeline = class Timeline {
         return this
     }
     currentIndex() {
+        console.log("Timeline.currentIndex()")
         return this.previous.length
     }
     setCurrentIndex(index) {
+        console.log("Timeline.setCurrentIndex()")
         if (index >= 0 && index < this.length) {
             while (this.currentIndex() < index) {
-                temp = this.current
+                const temp = this.current
                 this.current = this.next.pop()
                 this.previous.push(temp)
 
             }
             while (this.currentIndex() > index) {
-                temp = this.current
+                const temp = this.current
                 this.current = this.previous.pop()
                 this.next.push(temp)
 
             }
         }
     }
-    length() {
+    lengthMethod() {
         return this.previous.length + 1 + this.next.length
     }
     proximity() {
+        console.log("Timeline.proximity() -->Start")
         let res = []
         let dist;
         const index = this.currentIndex()
-        let amount = Math.min(this.length(), 5)
+        let amount = Math.min(this.lengthMethod(), 5)
         res.push(index)
         for (dist = 1; res.length < amount; dist++) {
             if (index - dist >= 0) {
                 res.unshift(index - dist)
             }
-            if (index + dist < this.length()) {
+            if (index + dist < this.lengthMethod()) {
                 res.push(index + dist)
             }
         }
+        console.log("Timeline.proximity() --> End")
         return res
     }
     append(element) {

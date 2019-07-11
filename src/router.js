@@ -6,6 +6,7 @@ import CreationWizard from './views/CreationWizard.vue'
 import Code from './views/Code.vue'
 import CodingWizard from './views/CodingWizard.vue'
 import Result from './views/Result.vue'
+import Pagination from './components/Pagination.vue'
 
 Vue.use(Router)
 
@@ -50,6 +51,12 @@ export default new Router({
       path: '/result/:id',
       name: 'result',
       component: Result,
+      props: true
+    },
+    {
+      path: '/pagination/:id/:index',
+      name: 'pagination',
+      component: Pagination,
       props: true
     }
   ]

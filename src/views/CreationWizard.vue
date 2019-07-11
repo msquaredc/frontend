@@ -11,7 +11,7 @@
           </md-field>
           <md-button
             class="md-raised md-primary"
-            :disabled="!projectIdentifier"
+            :disabled="identifierIsInvalid"
             @click="setIdentifier()"
           >Continue</md-button>
         </md-content>
@@ -99,6 +99,12 @@ export default {
     };
   },
   computed: {
+    identifierIsInvalid() {
+      if (this.projectIdentifier) {
+        return false;
+      }
+      return true;
+    },
     steps() {
       return this.$store.state.creation.steps;
     },

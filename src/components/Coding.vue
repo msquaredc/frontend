@@ -38,7 +38,7 @@ export default {
       return this.project.getProgress();
     },
     length() {
-      return this.project.codingTimeline.length();
+      return this.project.codingTimeline.lengthMethod();
     }
   }
 };
