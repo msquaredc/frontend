@@ -4,6 +4,9 @@
       <div class="md-layout-item" v-for="coding in codings.all" :key="coding.key">
         <Coding :id="coding.id"></Coding>
       </div>
+      <div class="md-layout-item">
+        <md-button class="md-primary md-raised" to="/create/">Create another project</md-button>
+      </div>
     </div>
   </div>
   <div v-else>
