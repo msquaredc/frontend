@@ -1,18 +1,17 @@
 <template>
   <div>
-    <!-- <div v-if="done">
+    <div v-if="done">
       <p>
         You're done
         <router-link :to="{name:'result', params:{id:id}}" append>
           <md-button class="md-primary md-raised">See the result!</md-button>
         </router-link>
       </p>
-    </div> -->
-    <Pagination :elements="allQuestions" :init_index="index-1">
-      <codingForm></codingForm>
+    </div>
+    <Pagination :elements="allQuestions" :init_index="index-1" v-on:result="storeResult" >
     </Pagination>
-    <!-- <md-progress-bar md-mode="determinate" :md-value="amount"></md-progress-bar>
-    <md-bottom-bar class="md-accent" :md-active-item="exactNumber(index)">
+    <md-progress-bar md-mode="determinate" :md-value="progress"></md-progress-bar>
+    <!--<md-bottom-bar class="md-accent" :md-active-item="exactNumber(index)">
       <md-bottom-bar-item :to="exactNumber(0)">
         <md-icon>first_page</md-icon>
       </md-bottom-bar-item>
@@ -54,11 +53,12 @@ export default {
   },
   data() {
     return {
+      progress: this.project.getProgress()
     };
   },
   components: { ProjectResult, CodingForm, Pagination },
   methods: {
-    exactNumber(number) {
+   /*  exactNumber(number) {
       return number.toString();
     },
     previous2() {
@@ -73,7 +73,14 @@ export default {
         value: this.currentQuestion
       });
     },
-    last() {}
+    last() {}, */
+    storeResult(result) {
+      result.done = true
+      let tmp = result.index
+      delete result.index
+      this.$store.dispatch("setAtIndex", {index:tmp,id:this.id,value:result})
+      this.progress = this.$store.getters.getProject(this.id).getProgress();
+    }
   },
   /* watch: {
     $route(to, from) {
@@ -85,7 +92,6 @@ export default {
   }, */
   computed: {
     next() {
-      console.log("Code.next")
       return Math.min(
         this.index + 1,
         this.project.codingTimeline.lengthMethod() - 1
@@ -108,27 +114,25 @@ export default {
         });
       }
     }, */
-    amount() {
-      return (100 * this.progress) / this.lengthFunc;
-    },
-    progress() {
-      return this.project.getProgress();
-    },
-    lengthFunc() {
-      return this.project.codingTimeline.lengthMethod();
+    progress2() {
+      return this.$store.getters.getProject(this.id).getProgress();
     },
     done() {
-      console.log("Code.done")
-      return this.project.codingTimeline.isDone();
+      if (this.project){
+        return this.project.isDone();
+      }
+      else{
+        return false
+      }
     },
-    allCodings() {
+    /* allCodings() {
       return this.$store.state;
-    },
+    }, */
     project() {
       console.log("Code.project")
       return this.$store.getters.getProject(this.id);
     },
-    currentQuestion() {
+    /* currentQuestion() {
       console.log("Code.currentQuestion " +this.index+" --> Start");
       let tmp = this.$store.getters
         .getCodingTimeline(this.id)
@@ -147,9 +151,9 @@ export default {
     proximity() {
       console.log("Code.proximity")
       return this.$store.getters.getCodingTimeline(this.id).proximity();
-    },
+    }, */
     allQuestions(){
-      return this.$store.getters.getCodingTimeline(this.id).all()
+      return this.project.codingTimeline
     }
   }
 };

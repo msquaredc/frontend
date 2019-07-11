@@ -15,7 +15,7 @@ let Project = class Project {
         this.relevant_headers = []
         this.question = {}
         this.answer = []
-        this.codingTimeline = new Timeline()
+        this.codingTimeline = []
     }
     getAllIrrelevantHeaders() {
         let hset = new Set(this.table.header)
@@ -33,12 +33,10 @@ let Project = class Project {
         })
     }
     getProgress() {
-        let count = 0;
-        for (var i = 0; i < this.codingTimeline.all().length; ++i) {
-            if (this.codingTimeline.all()[i].done)
-                count++;
-        }
-        return count
+        let count = this.codingTimeline.reduce(function (n, codingQuestion) {
+            return n + (codingQuestion.done == true);
+        }, 0);
+        return count * 100 / this.codingTimeline.length
     }
     getResponses(column) {
         let result = new Set();
@@ -63,7 +61,7 @@ let Project = class Project {
     setQuestions(columns) {
         columns.forEach(column => {
             shuffle(this.getResponses(column)).forEach(response => {
-                this.codingTimeline.append(new Coding(column, response, this.question[column]))
+                this.codingTimeline.push(new Coding(column, response, this.question[column]))
             })
         })
     }
@@ -75,12 +73,15 @@ let Project = class Project {
         p.relevant_headers = obj.relevant_headers
         p.question = obj.question
         p.answer = obj.answer
-        p.codingTimeline = new Timeline().fromObject(obj.codingTimeline)
+        p.codingTimeline = obj.codingTimeline
         return p
+    }
+    isDone() {
+        return this.getProgress() == 100
     }
     *export(done) {
         let responseCoding;
-        for (responseCoding of this.codingTimeline.all()) {
+        for (responseCoding of this.codingTimeline) {
             let actualRow;
             for (actualRow of this.getIrrelevantHeader(responseCoding.question, responseCoding.response)) {
                 let codingQuestion;
@@ -104,7 +105,7 @@ let Project = class Project {
     }
 }
 
-let Timeline = class Timeline {
+/* let Timeline = class Timeline {
     constructor() {
         this.previous = []
         this.current = null
@@ -168,7 +169,7 @@ let Timeline = class Timeline {
         return this.previous.length
     }
     setCurrentIndex(index) {
-        console.log("Timeline.setCurrentIndex()")
+        console.log("Timeline.setCurrentIndex()-> " + index)
         if (index >= 0 && index < this.length) {
             while (this.currentIndex() < index) {
                 const temp = this.current
@@ -220,7 +221,8 @@ let Timeline = class Timeline {
     }
     all() {
         if (this.current) {
-            return this.previous.reverse().concat([this.current]).concat(this.next)
+            let tmp = this.previous.slice().reverse()
+            return tmp.concat([this.current]).concat(this.next)
         }
         else {
             return []
@@ -230,7 +232,12 @@ let Timeline = class Timeline {
         this.setCurrentIndex(index)
         return this.all()[index]
     }
-}
+    setByIndex(index, value) {
+        this.setCurrentIndex(index)
+        this.current = value
+        console.log(this.current)
+    }
+} */
 
 let Coding = class Coding {
     constructor(question, response, coding_questions) {
@@ -242,4 +249,4 @@ let Coding = class Coding {
     }
 }
 
-export { Timeline, Project, Coding };
+export { Project, Coding };

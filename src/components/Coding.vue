@@ -7,10 +7,10 @@
 
       <md-card-content>
         <!--         {{ codingData }} -->
-        <md-progress-bar md-mode="determinate" :md-value="progress/length*100"></md-progress-bar>
-        <p>{{ progress }} of {{ length }} Questions coded.</p>
+        <md-progress-bar md-mode="determinate" :md-value="progress"></md-progress-bar>
+        <p>{{ progress/100*length }} of {{ length }} Questions coded.</p>
         <p></p>
-        <p>Overall progress: {{ progress/length*100}} %</p>
+        <p>Overall progress: {{ progress}} %</p>
       </md-card-content>
 
       <md-card-actions>
@@ -38,7 +38,11 @@ export default {
       return this.project.getProgress();
     },
     length() {
-      return this.project.codingTimeline.lengthMethod();
+      if (this.project.codingTimeline) {
+        return this.project.codingTimeline.length;
+      } else {
+        return 0;
+      }
     }
   }
 };

@@ -44,7 +44,7 @@ export default new Vuex.Store({
     getCurrentIndex: (state, getters) => (id) => {
       console.log("Storage.getCurrentIndex")
       return getters.getCodingTimeline(id).currentIndex()
-    }
+    },
   },
   mutations: {
     restoreTimeline(state, payload) {
@@ -113,6 +113,12 @@ export default new Vuex.Store({
       timeline.setCurrentIndex(payload.index)
       state.commit("setCodingTimeline", { id: payload.id, value: timeline })
       console.log("Storage.setCurrentIndex -> End")
+    },
+    setAtIndex(state, payload) {
+      console.log(payload)
+      let timeline = state.getters.getCodingTimeline(payload.id)
+      timeline[payload.index] = payload.value
+      state.commit("setCodingTimeline", { id: payload.id, value: timeline })
     }
   },
   plugins: [vuexLocal.plugin],

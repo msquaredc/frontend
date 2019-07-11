@@ -2,11 +2,11 @@
   <div>
     <!-- <h1>CodingForm</h1>
     <p>{{element}}</p>-->
-    <div class="md-headline container6">{{ currentQuestion.question }}</div>
+    <div class="md-headline container6">{{ element.question }}</div>
     <div class="md-title container6 responseblock">
-      <p>" {{currentQuestion.response}} "</p>
+      <p>" {{element.response}} "</p>
     </div>
-    <div v-for="codingQuestion in currentQuestion.coding_questions" :key="codingQuestion.key">
+    <div v-for="codingQuestion in element.coding_questions" :key="codingQuestion.key">
       <div v-if="codingQuestion.ask.type == 'string'">
         <md-field>
           <label>{{codingQuestion.show }}</label>
@@ -31,12 +31,16 @@
 </template>
 
 <script>
+import { watch } from "fs";
 export default {
   name: "CodingForm",
-  props: ["element"],
-  computed: {
-    currentQuestion() {
-      return this.element;
+  props: ["element", "index"],
+  computed: {},
+  watch: {
+    index(to, from) {
+      let tmp = Object.assign({}, this.element);
+      tmp.index = from;
+      this.$emit("result", tmp);
     }
   }
 };
