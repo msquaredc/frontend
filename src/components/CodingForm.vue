@@ -22,6 +22,9 @@
           <md-input type="number" v-model="codingQuestion.ask.model" />
         </md-field>
       </div>
+      <div v-else-if="codingQuestion.ask.type == 'choice'">
+        <p>Todo: Choice</p>
+      </div>
       <div v-else>
         <p>Unknown type {{codingQuestion.ask.type}}</p>
       </div>

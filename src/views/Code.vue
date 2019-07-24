@@ -8,9 +8,14 @@
         </router-link>
       </p>
     </div>
-    <Pagination :elements="allQuestions" :init_index="index-1" v-on:result="storeResult" >
-    </Pagination>
+    <Pagination :elements="allQuestions" :init_index="index-1" v-on:result="storeResult"></Pagination>
     <md-progress-bar md-mode="determinate" :md-value="progress"></md-progress-bar>
+    <md-content>
+      <router-link :to="{name:'result', params:{id:id}}" append>
+        <md-button class="md-primary md-raised">See the result!</md-button>
+      </router-link>
+    </md-content>
+    {{allQuestions}}
     <!--<md-bottom-bar class="md-accent" :md-active-item="exactNumber(index)">
       <md-bottom-bar-item :to="exactNumber(0)">
         <md-icon>first_page</md-icon>
@@ -35,7 +40,7 @@
     </md-bottom-bar>
     <md-content>
       <p>{{index}}</p>
-    </md-content> -->
+    </md-content>-->
   </div>
 </template>
 
@@ -43,8 +48,8 @@
 <script>
 import { Project, Timeline } from "../js/Project";
 import ProjectResult from "../components/ProjectResult.vue";
-import CodingForm from "../components/CodingForm.vue"
-import Pagination from "../components/Pagination.vue"
+import CodingForm from "../components/CodingForm.vue";
+import Pagination from "../components/Pagination.vue";
 export default {
   name: "Code",
   props: {
@@ -58,7 +63,7 @@ export default {
   },
   components: { ProjectResult, CodingForm, Pagination },
   methods: {
-   /*  exactNumber(number) {
+    /*  exactNumber(number) {
       return number.toString();
     },
     previous2() {
@@ -75,10 +80,14 @@ export default {
     },
     last() {}, */
     storeResult(result) {
-      result.done = true
-      let tmp = result.index
-      delete result.index
-      this.$store.dispatch("setAtIndex", {index:tmp,id:this.id,value:result})
+      result.done = true;
+      let tmp = result.index;
+      delete result.index;
+      this.$store.dispatch("setAtIndex", {
+        index: tmp,
+        id: this.id,
+        value: result
+      });
       this.progress = this.$store.getters.getProject(this.id).getProgress();
     }
   },
@@ -118,18 +127,17 @@ export default {
       return this.$store.getters.getProject(this.id).getProgress();
     },
     done() {
-      if (this.project){
+      if (this.project) {
         return this.project.isDone();
-      }
-      else{
-        return false
+      } else {
+        return false;
       }
     },
     /* allCodings() {
       return this.$store.state;
     }, */
     project() {
-      console.log("Code.project")
+      console.log("Code.project");
       return this.$store.getters.getProject(this.id);
     },
     /* currentQuestion() {
@@ -152,8 +160,8 @@ export default {
       console.log("Code.proximity")
       return this.$store.getters.getCodingTimeline(this.id).proximity();
     }, */
-    allQuestions(){
-      return this.project.codingTimeline
+    allQuestions() {
+      return this.project.codingTimeline;
     }
   }
 };

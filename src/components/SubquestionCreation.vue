@@ -19,6 +19,7 @@
           <span>{{ subquestion.show }}</span>
           <span v-if="subquestion.ask.type === 'string'">Textbox</span>
           <span v-else-if="subquestion.ask.type ==='number'">Number field</span>
+          <span v-else-if="subquestion.ask.type ==='boolean'">Yes/No</span>
           <span v-else>{{subquestion.ask}}</span>
         </div>
       </md-list-item>

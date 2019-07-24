@@ -88,6 +88,9 @@ export default new Vuex.Store({
     finishCreation(state) {
       state.codings.current = Object.assign({}, state.creation).id
       state.codings.all[state.codings.current] = Object.assign({}, state.creation);
+      state.codings.all[state.codings.current].codingTimeline = state.codings.all[state.codings.current].codingTimeline.filter(function (entry) {
+        return entry.coding_questions.length > 0
+      })
       let p = new Project()
       state.creation = p
     },

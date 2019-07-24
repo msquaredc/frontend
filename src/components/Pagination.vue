@@ -4,7 +4,12 @@
     <p>Elements: {{elements}}</p>
     <p>Index: {{index}}</p>
     <p>Current: {{current}}</p>-->
-    <CodingForm v-bind:element="current" v-bind:index="index" v-on="$listeners"></CodingForm>
+    <CodingForm
+      v-bind:element="current"
+      v-bind:index="index"
+      v-on="$listeners"
+      v-on:keyup.enter="goto(next)"
+    ></CodingForm>
     <md-bottom-bar class="md-accent" :md-active-item="exactNumber(index)">
       <md-bottom-bar-item v-on:click.native="goTo(first)">
         <md-icon>first_page</md-icon>
