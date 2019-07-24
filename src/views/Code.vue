@@ -15,7 +15,6 @@
         <md-button class="md-primary md-raised">See the result!</md-button>
       </router-link>
     </md-content>
-    {{allQuestions}}
     <!--<md-bottom-bar class="md-accent" :md-active-item="exactNumber(index)">
       <md-bottom-bar-item :to="exactNumber(0)">
         <md-icon>first_page</md-icon>
